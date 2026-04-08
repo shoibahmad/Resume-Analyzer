@@ -9,6 +9,39 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="css/components.css">
+    <!-- Mermaid for Architecture Diagrams -->
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({ startOnLoad: true, theme: 'neutral' });
+    </script>
+    <style>
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin: 4rem 0;
+        }
+        .tech-card {
+            padding: 2rem;
+            border-radius: var(--radius-md);
+            background: white;
+            border: 1px solid var(--border-subtle);
+            transition: all 0.3s ease;
+        }
+        .tech-card:hover { transform: translateY(-5px); border-color: var(--indigo-primary); }
+        .tech-card h3 { color: var(--text-indigo); margin-bottom: 1rem; font-size: 1.25rem; }
+        .tech-card ul { list-style: none; padding: 0; }
+        .tech-card li { margin-bottom: 0.5rem; font-size: 0.9rem; color: var(--text-muted); position: relative; padding-left: 1.25rem; }
+        .tech-card li::before { content: '→'; position: absolute; left: 0; color: var(--text-indigo); font-weight: 800; }
+        
+        .arch-section { margin: 6rem 0; text-align: center; }
+        .mermaid { background: white; padding: 2rem; border-radius: var(--radius-lg); border: 1px solid var(--border-subtle); box-shadow: var(--shadow-soft); margin-top: 2rem; }
+        
+        .workflow-step { display: flex; gap: 2rem; margin-bottom: 3rem; align-items: flex-start; }
+        .step-icon { width: 50px; height: 50px; background: var(--indigo-light); color: var(--indigo-primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; flex-shrink: 0; }
+        .step-body h4 { margin-bottom: 0.5rem; font-size: 1.2rem; }
+        .step-body p { color: var(--text-muted); line-height: 1.6; }
+    </style>
 </head>
 <body>
     <div class="bg-shape shape-1"></div>
@@ -41,29 +74,27 @@
                 <p style="font-size: 1.4rem; color: var(--text-muted); max-width: 800px; margin: 0 auto; line-height: 1.6;">
                     ResuMind AI was founded on a simple premise: Everyone deserves a world-class career coach, regardless of their background or network.
                 </p>
-            </header>
-
-            <section style="margin: 4rem 0;">
+            </header>            <section style="margin: 4rem 0;">
                 <div class="card glass-panel" style="padding: 4rem; display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center;">
                     <div>
                         <h2 style="font-size: 2.5rem; margin-bottom: 1.5rem;">Our Mission</h2>
                         <p style="font-size: 1.1rem; color: var(--text-muted); line-height: 1.8; margin-bottom: 2rem;">
-                            To democratize the high-level recruitment strategies once reserved for executive-level candidates. By leveraging the reasoning power of Gemini 2.5 Flash, we translate complex career patterns into actionable growth for thousands of professionals daily.
+                            To democratize high-level recruitment strategies. By leveraging the reasoning power of Gemini 2.5 Flash, we translate complex career patterns into actionable growth blueprints.
                         </p>
                         <div style="display: flex; gap: 2rem;">
                             <div>
                                 <div style="font-size: 2rem; font-weight: 800; color: var(--text-indigo);">98%</div>
-                                <div style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted);">ACCURACY RATE</div>
+                                <div style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted);">ATS ACCURACY</div>
                             </div>
                             <div style="width: 1px; background: var(--border-subtle);"></div>
                             <div>
-                                <div style="font-size: 2rem; font-weight: 800; color: #10b981;">100k+</div>
-                                <div style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted);">CAREERS TRANSFORMED</div>
+                                <div style="font-size: 2rem; font-weight: 800; color: #10b981;">10k+</div>
+                                <div style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted);">RESUMES AUDITED</div>
                             </div>
                         </div>
                     </div>
                     <div style="position: relative;">
-                        <div style="width: 100%; height: 350px; background: var(--indigo-gradient); border-radius: var(--radius-lg); opacity: 0.1;"></div>
+                        <div style="width: 100%; height: 350px; background: var(--indigo-gradient); border-radius: var(--radius-lg); opacity: 0.05;"></div>
                         <div style="position: absolute; inset: 2rem; display: flex; flex-direction: column; justify-content: center; gap: 1rem;">
                             <div class="card glass-panel" style="padding: 1.5rem; transform: translateX(-2rem);">
                                 <strong style="color: var(--text-indigo);">V1: The Foundation</strong>
@@ -74,6 +105,116 @@
                                 <p style="font-size: 0.85rem; color: var(--text-muted);">Predictive career blueprints & Vision audits.</p>
                             </div>
                         </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Technical Deep Dive -->
+            <section class="arch-section staggered-entry">
+                <div class="pill-label">ENGINEERING</div>
+                <h2>System Architecture</h2>
+                <p style="color: var(--text-muted); max-width: 600px; margin: 0 auto;">A unified, high-performance pipeline bridging the gap between raw data and predictive intelligence.</p>
+                
+                <div class="mermaid">
+graph TD
+    User((User)) -->|Upload PDF/DOCX| FE[Frontend - Vanilla JS/CSS]
+    FE -->|API Request| BE[Backend - FastAPI]
+    BE -->|Authentication| FB[Firebase Auth/Firestore]
+    BE -->|Raw Text Extraction| PE[Parsing Engine - PyMuPDF/Docx]
+    PE -->|Clean Data| AE[AI Synthesis Engine]
+    AE -->|Multi-Modal Input| GM[Google Gemini 2.5 Flash]
+    GM -->|NLP Insights| AE
+    GM -->|Computer Vision Audit| AE
+    AE -->|Structured JSON| BE
+    BE -->|Visualized Dashboard| FE
+    FE -->|Career Blueprint| User
+                </div>
+            </section>
+
+            <!-- Technology Stack -->
+            <section class="staggered-entry">
+                <h2 style="text-align: center; margin-bottom: 2rem;">Technology Stack</h2>
+                <div class="tech-grid">
+                    <div class="tech-card">
+                        <h3>Frontend</h3>
+                        <ul>
+                            <li><strong>Language:</strong> ES6+ JavaScript</li>
+                            <li><strong>Styling:</strong> Vanilla CSS (Glassmorphism)</li>
+                            <li><strong>Animation:</strong> Lottie.js & Web Animations API</li>
+                            <li><strong>Assets:</strong> Vector SVG architecture</li>
+                        </ul>
+                    </div>
+                    <div class="tech-card">
+                        <h3>Backend</h3>
+                        <ul>
+                            <li><strong>Framework:</strong> FastAPI (Python 3.10+)</li>
+                            <li><strong>Concurrency:</strong> Asynchronous Event Loop</li>
+                            <li><strong>Production:</strong> Gunicorn with Uvicorn workers</li>
+                            <li><strong>Security:</strong> OAuth2 / JWT (via Firebase)</li>
+                        </ul>
+                    </div>
+                    <div class="tech-card">
+                        <h3>AI Engine</h3>
+                        <ul>
+                            <li><strong>Model:</strong> Gemini 2.5 Flash</li>
+                            <li><strong>Capabilities:</strong> Vision + NLP + Reasoning</li>
+                            <li><strong>Parsing:</strong> PyMuPDF & Python-Docx</li>
+                            <li><strong>Logic:</strong> Multi-shot prompt engineering</li>
+                        </ul>
+                    </div>
+                    <div class="tech-card">
+                        <h3>Cloud & Data</h3>
+                        <ul>
+                            <li><strong>Hosting:</strong> Render (Automated CI/CD)</li>
+                            <li><strong>Database:</strong> Cloud Firestore (NoSQL)</li>
+                            <li><strong>Storage:</strong> Firebase Storage</li>
+                            <li><strong>CDN:</strong> UNPKG (for modular dependencies)</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Working of the Project -->
+            <section class="staggered-entry" style="margin-bottom: 8rem;">
+                <h2 style="text-align: center; margin-bottom: 4rem;">How ResuMind AI Works</h2>
+                
+                <div class="workflow-step">
+                    <div class="step-icon">1</div>
+                    <div class="step-body">
+                        <h4>Identity & Context Handshake</h4>
+                        <p>Every analysis starts with a secure handshake. Firebase handles identity management while our backend initializes a dedicated session instance to track your resume's versioning history in Firestore.</p>
+                    </div>
+                </div>
+
+                <div class="workflow-step">
+                    <div class="step-icon">2</div>
+                    <div class="step-body">
+                        <h4>Multi-Modal Ingestion</h4>
+                        <p>We don't just "read" your resume; we ingest it. Our parsing engine uses PyMuPDF to extract text and rasterize visual layouts simultaneously, ensuring that both your technical content and your visual design are preserved for analysis.</p>
+                    </div>
+                </div>
+
+                <div class="workflow-step">
+                    <div class="step-icon">3</div>
+                    <div class="step-body">
+                        <h4>AI Logic Synthesis</h4>
+                        <p>Using the Gemini 2.5 Flash engine, we perform a hybrid synthesis. We compare your skill density against 50,000+ industry-standard job benchmarks, calculating ATS compatibility and professional tone strength in milliseconds.</p>
+                    </div>
+                </div>
+
+                <div class="workflow-step">
+                    <div class="step-icon">4</div>
+                    <div class="step-body">
+                        <h4>Shadow Recruiter Vision Audit</h4>
+                        <p>This is where computer vision takes over. The AI looks at your resume just like a human eye would. It evaluates white space, visual hierarchy, and "eye-fatigue" metrics, providing 'brutal' but actionable design feedback.</p>
+                    </div>
+                </div>
+
+                <div class="workflow-step">
+                    <div class="step-icon">5</div>
+                    <div class="step-body">
+                        <h4>Predictive Dashboarding</h4>
+                        <p>Finally, all raw data points are transformed into a dynamic dashboard. We generate a 10-year career blueprint, salary negotiation tactics, and high-impact rewrites of your weakest bullet points.</p>
                     </div>
                 </div>
             </section>
@@ -100,8 +241,8 @@
                     <h4>Company</h4>
                     <ul class="footer-nav-list">
                         <li><a href="about.html">About Us</a></li>
-                        <li><a href="#">Privacy</a></li>
-                        <li><a href="#">Terms</a></li>
+                        <li><a href="privacy.html">Privacy</a></li>
+                        <li><a href="terms.html">Terms</a></li>
                     </ul>
                 </div>
                 <div class="footer-newsletter">
