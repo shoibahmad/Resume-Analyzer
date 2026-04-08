@@ -5,18 +5,18 @@ from fastapi.staticfiles import StaticFiles
 from dotenv import load_dotenv
 
 # Import modular services
-from utils.parsers import (
+from backend.utils.parsers import (
     extract_text_from_pdf, 
     extract_vision_part_from_pdf, 
     extract_text_from_docx
 )
-from services.analysis import (
+from backend.services.analysis import (
     get_api_client, 
     build_analysis_prompt, 
     run_analysis
 )
-from services.market import get_market_trends
-from services.career import generate_career_path
+from backend.services.market import get_market_trends
+from backend.services.career import generate_career_path
 
 # Load environment variables
 load_dotenv()
