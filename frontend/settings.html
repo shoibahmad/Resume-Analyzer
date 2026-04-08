@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings | ResuMind AI</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Dynamic SVG Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%234338ca'><path d='M12 2L2 7L12 12L22 7L12 2Z'/><path d='M2 17L12 22L22 17'/><path d='M2 12L12 17L22 12'/></svg>">
+
+    <!-- CSS Dependencies -->
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/settings.css">
+    <link rel="stylesheet" href="css/toast.css">
+</head>
+<body>
+    <div class="bg-shape shape-1"></div>
+    <div class="bg-shape shape-2"></div>
+
+    <div class="app-container">
+        <!-- Navigation -->
+        <nav class="top-nav glass-panel">
+            <div class="nav-brand">
+                <a href="dashboard.html" style="text-decoration: none; display: flex; align-items: center; gap: 0.75rem;">
+                    <div class="brand-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                            <path d="M12 2L2 7L12 12L22 7L12 2Z"/>
+                            <path d="M2 17L12 22L22 17"/>
+                            <path d="M2 12L12 17L22 12"/>
+                        </svg>
+                    </div>
+                    <span class="brand-text">ResuMind <span class="text-indigo">AI</span></span>
+                </a>
+            </div>
+
+            <div class="nav-links">
+                <a href="dashboard.html" class="nav-link">Dashboard</a>
+                <a href="analyzer.html" class="nav-link">Analyzer</a>
+                <div class="user-profile-nav" id="user-profile-display">
+                    <div class="u-info">
+                        <span id="user-name" class="u-name">Loading...</span>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <main class="main-content">
+            <div class="settings-layout">
+                <aside class="settings-sidebar">
+                    <div class="card glass-panel sidebar-nav">
+                        <button class="side-nav-item active" data-tab="profile">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                            Profile Settings
+                        </button>
+                        <button class="side-nav-item" data-tab="account">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                            Account Security
+                        </button>
+                        <button class="side-nav-item" data-tab="data">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                            Data & Privacy
+                        </button>
+                    </div>
+                </aside>
+
+                <div class="settings-content">
+                    <!-- Profile Tab -->
+                    <section id="tab-profile" class="settings-section active">
+                        <div class="section-header">
+                            <h2 class="section-title">Profile Settings</h2>
+                            <p class="section-subtitle">Manage your public identity and career preferences</p>
+                        </div>
+                        <div class="card glass-panel shadow-premium profile-card">
+                            <form id="profile-form">
+                                <div class="form-grid">
+                                    <div class="v3-form-group">
+                                        <label>FULL NAME</label>
+                                        <div class="input-wrapper">
+                                            <svg class="input-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                                            <input type="text" id="set-name" placeholder="Your Name">
+                                        </div>
+                                    </div>
+                                    <div class="v3-form-group">
+                                        <label>EMAIL ADDRESS</label>
+                                        <div class="input-wrapper disabled">
+                                            <svg class="input-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                                            <input type="email" id="set-email" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="v3-form-group">
+                                        <label>TARGET JOB ROLE</label>
+                                        <div class="input-wrapper">
+                                            <svg class="input-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
+                                            <input type="text" id="set-role" placeholder="e.g. Senior Frontend Developer">
+                                        </div>
+                                    </div>
+                                    <div class="v3-form-group">
+                                        <label>PREFERRED INDUSTRY</label>
+                                        <div class="input-wrapper">
+                                            <svg class="input-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18"></path><path d="M3 7v1a3 3 0 0 0 6 0V7m0 1a3 3 0 0 0 6 0V7m0 1a3 3 0 0 0 6 0V7H3l2-4h14l2 4"></path><path d="M5 21V10.85"></path><path d="M19 21V10.85"></path><path d="M9 21V14h6v7"></path></svg>
+                                            <select id="set-industry">
+                                                <option value="">Select Industry</option>
+                                                <option value="tech">Technology</option>
+                                                <option value="finance">Finance</option>
+                                                <option value="healthcare">Healthcare</option>
+                                                <option value="marketing">Marketing</option>
+                                                <option value="education">Education</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-indigo glow-effect save-btn">Save Changes</button>
+                            </form>
+                        </div>
+                    </section>
+
+                    <!-- Account Tab -->
+                    <section id="tab-account" class="settings-section">
+                        <div class="section-header">
+                            <h2 class="section-title">Account Security</h2>
+                            <p class="section-subtitle">Manage your password and account protection</p>
+                        </div>
+                        
+                        <div class="card glass-panel shadow-premium" style="margin-bottom: 2.5rem;">
+                            <div style="display: flex; align-items: center; gap: 1.5rem; margin-bottom: 2rem;">
+                                <div style="width: 48px; height: 48px; border-radius: 12px; background: var(--indigo-light); color: var(--indigo-primary); display: flex; align-items: center; justify-content: center;">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                                </div>
+                                <h3 style="font-family: 'Outfit'; font-weight: 800; font-size: 1.4rem;">Password Recovery</h3>
+                            </div>
+                            <p style="color: var(--text-muted); margin-bottom: 2rem; font-weight: 500; line-height: 1.6;">Send a secure password reset link to <strong><span id="display-email-recovery">your email</span></strong>. You will be logged out after resetting.</p>
+                            <button class="btn btn-indigo glow-effect" id="reset-pwd-btn" style="padding: 1rem 2rem;">Send Reset Email</button>
+                        </div>
+
+                        <div class="card glass-panel shadow-premium" style="border-top: 6px solid #ef4444; background: rgba(254, 242, 242, 0.4);">
+                            <div style="display: flex; align-items: center; gap: 1.5rem; margin-bottom: 1.5rem;">
+                                <div style="width: 48px; height: 48px; border-radius: 12px; background: #fee2e2; color: #ef4444; display: flex; align-items: center; justify-content: center;">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 6h18"></path><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+                                </div>
+                                <h3 style="color: #ef4444; font-family: 'Outfit'; font-weight: 800; font-size: 1.4rem;">Danger Zone</h3>
+                            </div>
+                            <p style="color: #ef4444; opacity: 0.8; margin-bottom: 2rem; font-weight: 600; line-height: 1.6;">Permanently delete your account and all associated scan history, resumes, and career data. This action is irreversible.</p>
+                            <button class="btn btn-error glow-red" id="delete-account-btn" style="padding: 1rem 2rem;">Delete My Account</button>
+                        </div>
+                    </section>
+
+                    <!-- Data Tab -->
+                    <section id="tab-data" class="settings-section">
+                        <div class="section-header">
+                            <h2 class="section-title">Data & Privacy</h2>
+                            <p class="section-subtitle">Take control of your data with GDPR-compliant exports</p>
+                        </div>
+                        
+                        <div class="card glass-panel shadow-premium">
+                            <div style="display: flex; align-items: center; gap: 1.5rem; margin-bottom: 2rem;">
+                                <div style="width: 48px; height: 48px; border-radius: 12px; background: #f0fdf4; color: #10b981; display: flex; align-items: center; justify-content: center;">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                                </div>
+                                <h3 style="font-family: 'Outfit'; font-weight: 800; font-size: 1.4rem;">Export Your Data</h3>
+                            </div>
+                            <p style="color: var(--text-muted); margin-bottom: 2.5rem; font-weight: 500; line-height: 1.6;">Download a complete archive of your profile information and analysis history in your preferred format.</p>
+                            <div style="display: flex; gap: 1.5rem; flex-wrap: wrap;">
+                                <button class="btn btn-indigo glow-effect" id="export-json-btn" style="padding: 1rem 2rem;">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                                    Export JSON
+                                </button>
+                                <button class="btn btn-outline" id="export-csv-btn" style="padding: 1rem 2rem;">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                                    Export CSV
+                                </button>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </main>
+
+        <!-- Re-auth Modal -->
+        <div id="reauth-modal" class="modal-overlay hidden">
+            <div class="modal-card glass-panel premium-modal animate-pop">
+                <div class="modal-header">
+                    <div class="warning-icon-wrapper">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                    </div>
+                    <h3>Verify Identity</h3>
+                </div>
+                <p class="modal-desc">Please enter your password to confirm account deletion. This action cannot be undone.</p>
+                <div class="v3-form-group">
+                    <div class="input-wrapper">
+                        <svg class="input-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                        <input type="password" id="reauth-password" placeholder="Confirm Password">
+                    </div>
+                </div>
+                <div class="modal-actions">
+                    <button class="btn btn-outline" id="cancel-reauth">Cancel</button>
+                    <button class="btn btn-error glow-red" id="confirm-delete">Delete Permanently</button>
+                </div>
+            </div>
+        </div>
+
+        <footer class="v4-footer-unified glass-panel">
+            <div class="footer-grid-v4">
+                <div class="footer-brand-col">
+                    <div class="f-logo">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2L2 7L12 12L22 7L12 2Z"/><path d="M2 17L12 22L22 17"/><path d="M2 12L12 17L22 12"/></svg>
+                        <span>ResuMind AI</span>
+                    </div>
+                    <p>Empowering the next generation of talent through deep AI-driven career intelligence and predictive modeling.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Product</h4>
+                    <ul class="footer-nav-list">
+                        <li><a href="analyzer.html">Analyzer</a></li>
+                        <li><a href="features.html">Features</a></li>
+                        <li><a href="api-docs.html">API Docs</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Company</h4>
+                    <ul class="footer-nav-list">
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="#">Privacy</a></li>
+                        <li><a href="#">Terms</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom-v4">
+                <div>© 2026 ResuMind AI. All rights reserved.</div>
+                <div style="color: var(--text-indigo);">Powered by Large Learning Model</div>
+            </div>
+        </footer>
+    </div>
+
+    <script type="module" src="js/auth.js"></script>
+    <script type="module" src="js/settings.js"></script>
+</body>
+</html>

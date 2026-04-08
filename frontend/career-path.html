@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Career Path Visualizer | ResuMind AI</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Dynamic SVG Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%234338ca'><path d='M12 2L2 7L12 12L22 7L12 2Z'/><path d='M2 17L12 22L22 17'/><path d='M2 12L12 17L22 12'/></svg>">
+
+    <!-- CSS Dependencies -->
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/components.css">
+    <style>
+        .career-path-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        .paths-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        .path-card {
+            padding: 2.5rem;
+            border-radius: var(--radius-lg);
+            position: relative;
+            overflow: hidden;
+            border-top: 5px solid var(--indigo-primary);
+        }
+        .path-title {
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            font-family: 'Outfit';
+        }
+        .timeline {
+            position: relative;
+            padding-left: 2rem;
+            margin-top: 2rem;
+        }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0.5rem;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #e2e8f0;
+        }
+        .timeline-node {
+            position: relative;
+            margin-bottom: 2.5rem;
+        }
+        .timeline-node:last-child {
+            margin-bottom: 0;
+        }
+        .node-dot {
+            position: absolute;
+            left: -1.95rem;
+            top: 0.25rem;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: white;
+            border: 3px solid var(--indigo-primary);
+            z-index: 2;
+        }
+        .node-content {
+            background: #f8fafc;
+            padding: 1.25rem;
+            border-radius: var(--radius-md);
+            border: 1px solid #e2e8f0;
+        }
+        .node-title {
+            font-weight: 800;
+            font-size: 1rem;
+            color: var(--text-main);
+            margin-bottom: 0.25rem;
+        }
+        .node-time {
+            font-size: 0.75rem;
+            font-weight: 800;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.75rem;
+            display: block;
+        }
+        .skill-tag {
+            display: inline-block;
+            padding: 2px 8px;
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            margin-right: 0.4rem;
+            margin-bottom: 0.4rem;
+            color: var(--text-muted);
+        }
+        .salary-badge {
+            display: inline-block;
+            margin-top: 0.5rem;
+            font-size: 0.85rem;
+            font-weight: 800;
+            color: #10b981;
+        }
+        .advice-card {
+            margin-top: 3rem;
+            padding: 2rem;
+            border-left: 5px solid #10b981;
+            background: rgba(16, 185, 129, 0.03);
+        }
+        .loading-state {
+            text-align: center;
+            padding: 4rem;
+        }
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid #f1f5f9;
+            border-top-color: var(--indigo-primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1.5rem;
+        }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+    <div class="bg-shape shape-1"></div>
+    <div class="bg-shape shape-2"></div>
+
+    <div class="app-container">
+        <!-- Navigation -->
+        <nav class="top-nav glass-panel">
+            <div class="nav-brand">
+                <a href="index.html" style="text-decoration: none; display: flex; align-items: center; gap: 0.75rem;">
+                    <div class="brand-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                            <path d="M12 2L2 7L12 12L22 7L12 2Z"/>
+                            <path d="M2 17L12 22L22 17"/>
+                            <path d="M2 12L12 17L22 12"/>
+                        </svg>
+                    </div>
+                    <span class="brand-text">ResuMind <span class="text-indigo">AI</span></span>
+                </a>
+            </div>
+
+            <div class="nav-links">
+                <a href="dashboard.html" class="nav-link">Dashboard</a>
+                <a href="analyzer.html" class="nav-link">Analyzer</a>
+                <div class="user-profile-nav" id="user-profile-display">
+                    <div class="u-info">
+                        <span id="user-name" class="u-name">Loading...</span>
+                    </div>
+                    <button class="btn btn-indigo btn-sm" id="logout-btn" onclick="handleLogout()" style="display: none;">Logout</button>
+                </div>
+            </div>
+        </nav>
+
+        <main class="main-content">
+            <div class="career-path-container">
+                <header style="text-align: center; margin-bottom: 4rem;">
+                    <div class="pill-label">GROWTH INTELLIGENCE</div>
+                    <h1 class="hero-title">Career Path <span class="gradient-text">Visualizer</span></h1>
+                    <p class="hero-subtitle">Interactive trajectories mapped to your unique skill profile.</p>
+                </header>
+
+                <div id="loading-overlay" class="loading-state">
+                    <div class="spinner"></div>
+                    <h2>Generating Career Trajectories...</h2>
+                    <p>AI Engine is calculating your 10-year outlook based on your skills.</p>
+                </div>
+
+                <div id="paths-container" class="paths-grid" style="display: none;">
+                    <!-- Paths populated by JS -->
+                </div>
+
+                <div id="advice-section" class="card glass-panel advice-card" style="display: none;">
+                    <h3 style="margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                        AI Career Coaching
+                    </h3>
+                    <p id="advice-text" style="color: var(--text-muted); line-height: 1.7; font-weight: 500;"></p>
+                </div>
+            </div>
+        </main>
+
+        <footer class="v4-footer-unified glass-panel">
+            <div class="footer-grid-v4">
+                <div class="footer-brand-col">
+                    <div class="f-logo">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2L2 7L12 12L22 7L12 2Z"/><path d="M2 17L12 22L22 17"/><path d="M2 12L12 17L22 12"/></svg>
+                        <span>ResuMind AI</span>
+                    </div>
+                    <p>Empowering the next generation of talent through deep AI-driven career intelligence and predictive modeling.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Product</h4>
+                    <ul class="footer-nav-list">
+                        <li><a href="analyzer.html">Analyzer</a></li>
+                        <li><a href="features.html">Features</a></li>
+                        <li><a href="api-docs.html">API Docs</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Company</h4>
+                    <ul class="footer-nav-list">
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="#">Privacy</a></li>
+                        <li><a href="#">Terms</a></li>
+                    </ul>
+                </div>
+                <div class="footer-newsletter">
+                    <h4>Stay Updated</h4>
+                    <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.5rem;">Get the latest career trends directly in your inbox.</p>
+                    <div class="newsletter-form">
+                        <input type="email" placeholder="email@example.com" class="newsletter-input">
+                        <button class="btn btn-indigo btn-sm">Join</button>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom-v4">
+                <div>© 2026 ResuMind AI. All rights reserved.</div>
+                <div style="color: var(--text-indigo);">Powered by Large Learning Model</div>
+            </div>
+        </footer>
+    </div>
+
+    <script type="module" src="js/auth.js"></script>
+    <script type="module" src="js/career-path.js"></script>
+</body>
+</html>

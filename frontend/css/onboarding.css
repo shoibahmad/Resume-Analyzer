@@ -1,0 +1,108 @@
+/* Onboarding Wizard Styles */
+.onboarding-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    backdrop-filter: blur(4px);
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    visibility: hidden;
+    transition: all 0.4s ease;
+}
+
+.onboarding-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+    visibility: visible;
+}
+
+.onboarding-card {
+    background: white;
+    width: 500px;
+    max-width: 90vw;
+    border-radius: 24px;
+    padding: 3rem;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+.onboarding-step {
+    display: none;
+    animation: slideIn 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.onboarding-step.active {
+    display: block;
+}
+
+.onboarding-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 16px;
+    background: var(--indigo-light);
+    color: var(--indigo-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 2rem;
+    font-size: 2rem;
+}
+
+.onboarding-title {
+    font-size: 2rem;
+    font-weight: 800;
+    font-family: 'Outfit';
+    margin-bottom: 1rem;
+}
+
+.onboarding-desc {
+    color: var(--text-muted);
+    line-height: 1.7;
+    margin-bottom: 2.5rem;
+    font-size: 1.1rem;
+}
+
+.onboarding-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.step-dots {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 4px;
+    background: #e2e8f0;
+    transition: all 0.3s ease;
+}
+
+.dot.active {
+    width: 24px;
+    background: var(--indigo-primary);
+}
+
+.onboarding-bg-pattern {
+    position: absolute;
+    top: -50px;
+    right: -50px;
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle, var(--indigo-light) 0%, transparent 70%);
+    opacity: 0.5;
+    z-index: -1;
+}
+
+@keyframes slideIn {
+    from { opacity: 0; transform: translateX(20px); }
+    to { opacity: 1; transform: translateX(0); }
+}

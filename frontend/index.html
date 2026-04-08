@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ResuMind AI | Advanced Resume Intelligence</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Dynamic SVG Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%234338ca'><path d='M12 2L2 7L12 12L22 7L12 2Z'/><path d='M2 17L12 22L22 17'/><path d='M2 12L12 17L22 12'/></svg>">
+
+    <!-- CSS Dependencies -->
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/toast.css">
+    <link rel="stylesheet" href="css/components.css">
+    <style>
+        :root {
+            --hero-gradient: linear-gradient(135deg, #f8f9ff 0%, #eff2ff 100%);
+        }
+        .hero-section {
+            padding: 8rem 2rem 4rem;
+            position: relative;
+            z-index: 10;
+        }
+        .hero-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+        .hero-content { text-align: left; }
+        .hero-tag {
+            background: rgba(79, 70, 229, 0.08);
+            color: var(--text-indigo);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-weight: 800;
+            font-size: 0.75rem;
+            letter-spacing: 0.05em;
+            margin-bottom: 2rem;
+            display: inline-block;
+            border: 1px solid rgba(79, 70, 229, 0.1);
+        }
+        .hero-main-title {
+            font-size: 4rem;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            color: var(--text-main);
+        }
+        .hero-sub {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            margin-bottom: 3rem;
+            line-height: 1.6;
+        }
+        .hero-visual {
+            position: relative;
+            border-radius: 30px;
+            overflow: hidden;
+            box-shadow: 0 50px 100px -20px rgba(79, 70, 229, 0.15), 0 30px 60px -30px rgba(0, 0, 0, 0.1);
+            border: 8px solid white;
+            transition: transform 0.5s ease;
+        }
+        .hero-visual:hover {
+            transform: translateY(-10px) rotate(1deg);
+        }
+        .hero-visual img {
+            width: 100%;
+            display: block;
+        }
+
+        /* --- feature-stats-row --- */
+        .feature-stats-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 4rem auto 8rem;
+            padding: 0 2rem;
+        }
+        .stat-card {
+            padding: 2.5rem;
+            text-align: center;
+            border-radius: 32px;
+            background: white;
+            border: 1px solid var(--border-subtle);
+            transition: all 0.3s ease;
+        }
+        .stat-card:hover { border-color: var(--indigo-light); transform: translateY(-5px); }
+        .stat-card .icon { font-size: 2.5rem; margin-bottom: 1rem; display: block; }
+        .stat-card h3 { font-size: 1.25rem; margin-bottom: 0.5rem; }
+        .stat-card p { font-size: 0.95rem; color: var(--text-muted); }
+
+        /* --- Section Titles --- */
+        .section-h { text-align: center; margin-bottom: 5rem; max-width: 700px; margin-left: auto; margin-right: auto; }
+        .section-h h2 { font-size: 2.5rem; font-weight: 800; margin-bottom: 1rem; }
+        .section-h p { color: var(--text-muted); font-size: 1.1rem; }
+
+        /* --- How It Works --- */
+        .how-it-works { padding: 8rem 2rem; background: #f8fafc; border-radius: 60px; margin-bottom: 8rem; }
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 3rem;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        .step-item { position: relative; text-align: center; }
+        .step-num {
+            width: 50px; height: 50px; background: var(--indigo-primary); color: white;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-weight: 800; margin: 0 auto 1.5rem;
+            box-shadow: 0 8px 16px rgba(79, 70, 229, 0.3);
+        }
+        .step-item h4 { font-size: 1.5rem; margin-bottom: 1rem; }
+        .step-item p { color: var(--text-muted); line-height: 1.6; }
+
+        @media (max-width: 900px) {
+            .feature-stats-row, .steps-grid { grid-template-columns: 1fr; }
+        }
+
+        /* --- Premium Navbar --- */
+        .top-nav {
+            position: fixed;
+            top: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            width: calc(100% - 4rem);
+            max-width: 1200px;
+            z-index: 1000;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 24px;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.1);
+        }
+        .nav-brand-link { text-decoration: none; display: flex; align-items: center; gap: 0.75rem; }
+        .nav-brand-text {
+            font-family: 'Outfit';
+            font-weight: 800;
+            font-size: 1.4rem;
+            color: var(--text-main);
+        }
+        .nav-links { display: flex; align-items: center; gap: 2rem; }
+        .nav-link { 
+            text-decoration: none; color: var(--text-main); font-weight: 700; font-size: 0.95rem; 
+            transition: all 0.3s ease;
+        }
+        .nav-link:hover { color: var(--text-indigo); }
+
+        /* Animation Classes */
+        .staggered-entry {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+        .staggered-entry.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-shape shape-1"></div>
+    <div class="bg-shape shape-2"></div>
+
+    <div class="app-container">
+        <!-- Navigation -->
+        <nav class="top-nav">
+            <div class="nav-brand">
+                <a href="index.html" class="nav-brand-link">
+                    <div class="brand-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                            <path d="M12 2L2 7L12 12L22 7L12 2Z"/>
+                            <path d="M2 17L12 22L22 17"/>
+                            <path d="M2 12L12 17L22 12"/>
+                        </svg>
+                    </div>
+                    <span class="nav-brand-text">ResuMind <span class="text-indigo">AI</span></span>
+                </a>
+            </div>
+            <div class="nav-links">
+                <a href="features.html" class="nav-link">Features</a>
+                <a href="about.html" class="nav-link">About Us</a>
+                <a href="api-docs.html" class="nav-link">API</a>
+                <a href="auth.html" class="nav-link" id="auth-link">Sign In</a>
+                <div class="user-profile-nav" id="user-nav-summary" style="display: none; align-items: center; gap: 1rem;">
+                    <a href="dashboard.html" class="btn btn-outline btn-sm">Dashboard</a>
+                    <a href="analyzer.html" class="btn btn-indigo btn-sm">Go to Analyzer</a>
+                </div>
+                <a href="auth.html" class="btn btn-indigo btn-sm" id="get-started-btn">Get Started</a>
+            </div>
+        </nav>
+
+        <main class="main-content">
+            <section class="hero-section">
+                <div class="hero-container">
+                    <div class="hero-content staggered-entry fade-in-up">
+                        <div class="hero-tag">NEXT-GEN CAREER INTELLIGENCE</div>
+                        <h1 class="hero-main-title">Land Your Dream Job with <span class="gradient-text">AI Precision</span></h1>
+                        <p class="hero-sub">Get deep technical analysis, personalized learning roadmaps, and salary negotiation coaching in seconds. Powered by Large Learning Model.</p>
+                        
+                        <div class="cta-group" style="justify-content: flex-start;">
+                            <a href="analyzer.html" class="btn btn-indigo" style="padding: 1.25rem 2.5rem; font-size: 1.1rem;">
+                                Analyze Resume Now
+                            </a>
+                            <a href="features.html" class="btn btn-outline" style="padding: 1.25rem 2.5rem; font-size: 1.1rem;">
+                                Features Preview
+                            </a>
+                        </div>
+                    </div>
+                    <div class="hero-visual staggered-entry fade-in-up" style="--delay: 0.2s;">
+                        <img src="assets/hero-visual.png" alt="ResuMind AI Concept">
+                    </div>
+                </div>
+            </section>
+
+            <!-- Feature Stats -->
+            <section class="feature-stats-row staggered-entry fade-in-up" style="--delay: 0.3s;">
+                <div class="stat-card">
+                    <span class="icon">🚀</span>
+                    <h3>98% ATS Accuracy</h3>
+                    <p>Our NLP engine parses resumes exactly like top-tier enterprise talent systems.</p>
+                </div>
+                <div class="stat-card">
+                    <span class="icon">💎</span>
+                    <h3>Career Blueprint</h3>
+                    <p>Map out your next 10 years with predictive role fit and salary milestones.</p>
+                </div>
+                <div class="stat-card">
+                    <span class="icon">🤖</span>
+                    <h3>Vision Analysis</h3>
+                    <p>Professional human-eye audit of your typography, layout, and visual hierarchy.</p>
+                </div>
+            </section>
+
+            <!-- How It Works Section -->
+            <section class="how-it-works">
+                <div class="section-h staggered-entry fade-in-up">
+                    <div class="pill-label" style="display: table; margin: 0 auto 1.5rem;">THE PROCESS</div>
+                    <h2>How It Works</h2>
+                    <p>Three simple steps to bridge the gap between your profile and your dream role.</p>
+                </div>
+
+                <div class="steps-grid">
+                    <div class="step-item staggered-entry fade-in-up" style="--delay: 0.1s;">
+                        <div class="step-num">1</div>
+                        <h4>Upload Profile</h4>
+                        <p>Upload your resume in PDF or DOCX format. Our engine extracts your deep technical DNA.</p>
+                    </div>
+                    <div class="step-item staggered-entry fade-in-up" style="--delay: 0.2s;">
+                        <div class="step-num">2</div>
+                        <h4>AI Synthesis</h4>
+                        <p>We compare your skills against 50,000+ benchmark requirements in your target industry.</p>
+                    </div>
+                    <div class="step-item staggered-entry fade-in-up" style="--delay: 0.3s;">
+                        <div class="step-num">3</div>
+                        <h4>Land the Role</h4>
+                        <p>Receive an actionable roadmap, interview questions, and a perfect AI-rewritten summary.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Trust Indicators -->
+            <section style="margin-bottom: 8rem; text-align: center;">
+                <h3 style="font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--text-muted); margin-bottom: 3rem;">JOIN THE ELITE</h3>
+                <div style="display: flex; gap: 4rem; justify-content: center; flex-wrap: wrap; opacity: 0.4; filter: grayscale(100%);">
+                    <div style="font-size: 1.5rem; font-weight: 900; letter-spacing: -0.05em; font-family: 'Outfit';">GOOGLE</div>
+                    <div style="font-size: 1.5rem; font-weight: 900; letter-spacing: -0.05em; font-family: 'Outfit';">AMAZON</div>
+                    <div style="font-size: 1.5rem; font-weight: 900; letter-spacing: -0.05em; font-family: 'Outfit';">MICROSOFT</div>
+                    <div style="font-size: 1.5rem; font-weight: 900; letter-spacing: -0.05em; font-family: 'Outfit';">META</div>
+                    <div style="font-size: 1.5rem; font-weight: 900; letter-spacing: -0.05em; font-family: 'Outfit';">NETFLIX</div>
+                </div>
+            </section>
+
+            <!-- Final CTA -->
+            <section style="padding: 6rem 2rem; background: var(--indigo-gradient); border-radius: 40px; text-align: center; color: white; margin-bottom: 4rem;">
+                <h2 style="font-size: 2.5rem; font-weight: 800; margin-bottom: 1.5rem;">Ready to optimize your future?</h2>
+                <p style="font-size: 1.1rem; opacity: 0.9; margin-bottom: 2.5rem; max-width: 600px; margin-left: auto; margin-right: auto;">
+                    Join over 10,000+ professionals using ResuMind AI to land roles at the world's most innovative companies.
+                </p>
+                <a href="auth.html" class="btn" style="background: white; color: var(--indigo-primary); padding: 1.25rem 3rem; font-size: 1.1rem; font-weight: 800;">
+                    Get Started for Free
+                </a>
+            </section>
+        </main>
+
+        <footer class="v4-footer-unified glass-panel">
+            <div class="footer-grid-v4">
+                <div class="footer-brand-col">
+                    <div class="f-logo">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2L2 7L12 12L22 7L12 2Z"/><path d="M2 17L12 22L22 17"/><path d="M2 12L12 17L22 12"/></svg>
+                        <span>ResuMind AI</span>
+                    </div>
+                    <p>Empowering the next generation of talent through deep AI-driven career intelligence and predictive modeling.</p>
+                    <div class="footer-socials">
+                        <a href="#"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path></svg></a>
+                        <a href="#"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg></a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h4>Product</h4>
+                    <ul class="footer-nav-list">
+                        <li><a href="analyzer.html">Analyzer</a></li>
+                        <li><a href="features.html">Features</a></li>
+                        <li><a href="api-docs.html">API Docs</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Company</h4>
+                    <ul class="footer-nav-list">
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="#">Privacy</a></li>
+                        <li><a href="#">Terms</a></li>
+                    </ul>
+                </div>
+                <div class="footer-newsletter">
+                    <h4>Stay Updated</h4>
+                    <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.5rem;">Get the latest career trends directly in your inbox.</p>
+                    <div class="newsletter-form">
+                        <input type="email" placeholder="email@example.com" class="newsletter-input">
+                        <button class="btn btn-indigo btn-sm">Join</button>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom-v4">
+                <div>© 2026 ResuMind AI. All rights reserved.</div>
+                <div style="color: var(--text-indigo);">Powered by Large Learning Model</div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- JS Scripts -->
+    <script type="module" src="js/auth.js"></script>
+    <script type="module">
+        import { auth } from './js/firebase-config.js';
+        import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                document.getElementById('auth-link').style.display = 'none';
+                document.getElementById('get-started-btn').style.display = 'none';
+                document.getElementById('user-nav-summary').style.display = 'flex';
+            }
+        });
+
+        // --- Scroll Reveal Logic ---
+        const observerOptions = {
+            threshold: 0.15,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    // Once revealed, no need to observe anymore
+                    revealObserver.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const revealElements = document.querySelectorAll('.staggered-entry');
+            revealElements.forEach(el => revealObserver.observe(el));
+        });
+    </script>
+</body>
+</html>

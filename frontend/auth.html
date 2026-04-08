@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Authentication | ResuMind AI</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Dynamic SVG Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%234338ca'><path d='M12 2L2 7L12 12L22 7L12 2Z'/><path d='M2 17L12 22L22 17'/><path d='M2 12L12 17L22 12'/></svg>">
+
+    <!-- CSS Dependencies -->
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/toast.css">
+    <link rel="stylesheet" href="css/auth.css">
+    
+    <!-- Lottie Player -->
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+    
+    <style>
+        .hidden { display: none !important; }
+        .auth-status-v2 {
+            padding: 1rem;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            display: none;
+            text-align: center;
+        }
+        .auth-status-v2.error { background: #fee2e2; color: #991b1b; display: block; }
+        .auth-status-v2.success { background: #d1fae5; color: #065f46; display: block; }
+    </style>
+</head>
+<body class="auth-page">
+    
+    <!-- LEFT PANEL: Animation & Branding -->
+    <aside class="info-panel">
+        <div class="mesh-gradient">
+            <div class="mesh-ball ball-1"></div>
+            <div class="mesh-ball ball-2"></div>
+            <div class="mesh-ball ball-3"></div>
+        </div>
+        
+        <div class="info-content">
+            <a href="index.html" class="info-brand">
+                <div class="brand-icon" style="padding: 10px; border-radius: 12px; background: white; color: #4f46e5;">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <path d="M12 2L2 7L12 12L22 7L12 2Z"/>
+                        <path d="M2 17L12 22L22 17"/>
+                        <path d="M2 12L12 17L22 12"/>
+                    </svg>
+                </div>
+                <span class="info-brand-text">ResuMind AI</span>
+            </a>
+            
+            <h1 class="info-title">The Future of <br><span class="gradient-text" style="background: linear-gradient(90deg, #fff 0%, rgba(255,255,255,0.6) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Career Logic.</span></h1>
+            <p class="info-subtitle">Join 10,000+ professionals using deep AI synthesis to navigate their career trajectory with surgical precision.</p>
+            
+            <div class="lottie-container">
+                <lottie-player 
+                    src="https://lottie.host/79a8342a-a92c-4976-9d3c-99fa47ff690b/O8UfBv8yP8.json" 
+                    background="transparent" 
+                    speed="1" 
+                    loop 
+                    autoplay>
+                </lottie-player>
+            </div>
+            
+            <div style="margin-top: 3rem; display: flex; gap: 2rem; align-items: center; opacity: 0.6;">
+                <div style="font-size: 0.8rem; font-weight: 800; letter-spacing: 0.1em; color: white;">TRUSTED BY TEAMS AT</div>
+                <div style="display: flex; gap: 1.5rem; filter: grayscale(100%) invert(1);">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg" height="15" alt="Google">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/IBM_logo.svg" height="15" alt="IBM">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/9/96/Microsoft_logo_%282012%29.svg" height="15" alt="Microsoft">
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- RIGHT PANEL: Authentication Forms -->
+    <main class="form-panel">
+        <div class="auth-card-v2 staggered-entry">
+            <div class="auth-header-v2">
+                <h2 id="auth-title">Welcome Back</h2>
+                <p id="auth-subtitle">Sign in to continue your career journey.</p>
+            </div>
+
+            <!-- Tabs -->
+            <div class="auth-tabs-v2" id="auth-tabs">
+                <div class="tab-v2 active" data-mode="login">Email Sign In</div>
+                <div class="tab-v2" data-mode="signup">Create Account</div>
+            </div>
+
+            <div id="auth-message" class="auth-status-v2"></div>
+
+            <!-- Login Form -->
+            <form id="login-form">
+                <div class="form-group-v2">
+                    <label>EMAIL ADDRESS</label>
+                    <input type="email" id="login-email" class="input-v2" placeholder="name@company.com" required>
+                </div>
+                <div class="form-group-v2" style="position: relative;">
+                    <label>PASSWORD</label>
+                    <input type="password" id="login-password" class="input-v2" placeholder="••••••••" required>
+                    <button type="button" class="password-toggle" data-for="login-password" style="position: absolute; right: 1rem; top: 2.7rem; border: none; background: none; cursor: pointer; color: #94a3b8;">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                    </button>
+                </div>
+                <a href="#" class="forgot-v2" id="show-forgot">Forgot Password?</a>
+                <button type="submit" class="btn-auth">Sign In to Dashboard</button>
+            </form>
+
+            <!-- Signup Form -->
+            <form id="signup-form" class="hidden">
+                <div class="form-group-v2">
+                    <label>FULL NAME</label>
+                    <input type="text" id="signup-name" class="input-v2" placeholder="John Doe" required>
+                </div>
+                <div class="form-group-v2">
+                    <label>EMAIL ADDRESS</label>
+                    <input type="email" id="signup-email" class="input-v2" placeholder="name@company.com" required>
+                </div>
+                <div class="form-group-v2" style="position: relative;">
+                    <label>PASSWORD</label>
+                    <input type="password" id="signup-password" class="input-v2" placeholder="Min. 6 characters" required minlength="6">
+                    <button type="button" class="password-toggle" data-for="signup-password" style="position: absolute; right: 1rem; top: 2.7rem; border: none; background: none; cursor: pointer; color: #94a3b8;">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                    </button>
+                </div>
+                <button type="submit" class="btn-auth">Create Free Account</button>
+            </form>
+
+            <!-- Forgot Password Form -->
+            <form id="forgot-form" class="hidden">
+                <div class="form-group-v2">
+                    <label>RECOVERY EMAIL</label>
+                    <input type="email" id="forgot-email" class="input-v2" placeholder="Enter your email" required>
+                </div>
+                <button type="submit" class="btn-auth">Send Recovery Link</button>
+                <div style="text-align: center; margin-top: 1.5rem;">
+                    <a href="#" id="back-to-login" style="font-size: 0.85rem; font-weight: 700; color: #4f46e5; text-decoration: none;">Back to Login</a>
+                </div>
+            </form>
+            
+            <div class="auth-footer-v2">
+                © 2026 ResuMind AI. <a href="#">Privacy</a> & <a href="#">Terms</a>
+            </div>
+        </div>
+    </main>
+
+    <!-- Scripts -->
+    <script type="module" src="js/auth.js"></script>
+    <script>
+        // Form Switching Logic
+        const tabs = document.querySelectorAll('.tab-v2');
+        const loginForm = document.getElementById('login-form');
+        const signupForm = document.getElementById('signup-form');
+        const forgotForm = document.getElementById('forgot-form');
+        const title = document.getElementById('auth-title');
+        const subtitle = document.getElementById('auth-subtitle');
+        const tabContainer = document.getElementById('auth-tabs');
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                const mode = tab.dataset.mode;
+                tabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+
+                forgotForm.classList.add('hidden');
+                if (mode === 'login') {
+                    loginForm.classList.remove('hidden');
+                    signupForm.classList.add('hidden');
+                    title.textContent = 'Welcome Back';
+                    subtitle.textContent = 'Sign in to continue your career journey.';
+                } else {
+                    loginForm.classList.add('hidden');
+                    signupForm.classList.remove('hidden');
+                    title.textContent = 'Start for Free';
+                    subtitle.textContent = 'Join 10,000+ users optimizing their resumes.';
+                }
+            });
+        });
+
+        // Toggle Password Visibility
+        document.querySelectorAll('.password-toggle').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const inputId = btn.dataset.for;
+                const input = document.getElementById(inputId);
+                const isPassword = input.type === 'password';
+                input.type = isPassword ? 'text' : 'password';
+                
+                btn.innerHTML = isPassword 
+                    ? `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>`
+                    : `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>`;
+            });
+        });
+
+        // Show Forgot Password
+        document.getElementById('show-forgot').addEventListener('click', (e) => {
+            e.preventDefault();
+            loginForm.classList.add('hidden');
+            signupForm.classList.add('hidden');
+            forgotForm.classList.remove('hidden');
+            tabContainer.classList.add('hidden');
+            title.textContent = 'Reset Password';
+            subtitle.textContent = "We'll send a recovery link to your inbox.";
+        });
+
+        // Back to Login
+        document.getElementById('back-to-login').addEventListener('click', (e) => {
+            e.preventDefault();
+            forgotForm.classList.add('hidden');
+            loginForm.classList.remove('hidden');
+            tabContainer.classList.remove('hidden');
+            tabs[0].click();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Dashboard | ResuMind AI</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Dynamic SVG Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%234338ca'><path d='M12 2L2 7L12 12L22 7L12 2Z'/><path d='M2 17L12 22L22 17'/><path d='M2 12L12 17L22 12'/></svg>">
+
+    <!-- CSS Dependencies -->
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/toast.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="bg-shape shape-1"></div>
+    <div class="bg-shape shape-2"></div>
+
+    <div class="app-container">
+        <!-- Navigation -->
+        <nav class="top-nav glass-panel">
+            <div class="nav-brand">
+                <a href="index.html" style="text-decoration: none; display: flex; align-items: center; gap: 0.75rem;">
+                    <div class="brand-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                            <path d="M12 2L2 7L12 12L22 7L12 2Z"/>
+                            <path d="M2 17L12 22L22 17"/>
+                            <path d="M2 12L12 17L22 12"/>
+                        </svg>
+                    </div>
+                    <span class="brand-text">ResuMind <span class="text-indigo">AI</span></span>
+                </a>
+            </div>
+
+            <div class="nav-links">
+                <a href="analyzer.html" class="nav-link-btn">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                    Analyzer
+                </a>
+                <a href="career-path.html" class="nav-link-btn">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                    Career Path
+                </a>
+                <a href="settings.html" class="nav-link-btn">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                    Settings
+                </a>
+                <div class="user-profile-nav" id="user-profile-display">
+                    <div class="u-info">
+                        <span id="user-name" class="u-name">Loading...</span>
+                        <span id="user-email" class="u-email"></span>
+                    </div>
+                    <button class="btn btn-indigo btn-sm" id="logout-btn" onclick="handleLogout()" style="display: none;">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                        Logout
+                    </button>
+                </div>
+            </div>
+        </nav>
+
+        <main class="main-content">
+            <!-- Welcome Hero Section -->
+            <section class="dashboard-hero">
+                <div class="dashboard-greeting">
+                    <div class="greeting-text">
+                        <h1>Welcome back, <span class="gradient-text" id="dash-user-name">User</span> 👋</h1>
+                        <p>Here's your career intelligence overview. Keep improving!</p>
+                    </div>
+                    <div class="greeting-actions">
+                        <a href="analyzer.html" class="btn-new-scan">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                            New Analysis
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Stats Cards -->
+            <section class="dash-stats-grid">
+                <div class="card glass-panel dash-stat-card">
+                    <div class="stat-icon-wrap indigo">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+                    </div>
+                    <div class="dash-stat-label">Total Analyses</div>
+                    <div class="dash-stat-value indigo" id="dash-total-scans">0</div>
+                </div>
+                <div class="card glass-panel dash-stat-card">
+                    <div class="stat-icon-wrap green">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                    </div>
+                    <div class="dash-stat-label">Average Score</div>
+                    <div class="dash-stat-value green" id="dash-avg-score">0%</div>
+                </div>
+                <div class="card glass-panel dash-stat-card">
+                    <div class="stat-icon-wrap amber">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"></path></svg>
+                    </div>
+                    <div class="dash-stat-label">Best Score</div>
+                    <div class="dash-stat-value amber" id="dash-best-score">0%</div>
+                </div>
+                <div class="card glass-panel dash-stat-card">
+                    <div class="stat-icon-wrap pink">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                    </div>
+                    <div class="dash-stat-label">Top Skill Gap</div>
+                    <div class="dash-stat-value pink" id="dash-top-gap" style="font-size: 1.5rem;">N/A</div>
+                </div>
+            </section>
+
+            <!-- Charts Row -->
+            <section class="dash-charts-grid">
+                <!-- Score Progression Chart -->
+                <div class="card glass-panel dash-chart-card">
+                    <h3>Score Progression</h3>
+                    <p class="chart-subtitle">Track your improvement across scans</p>
+                    <div style="height: 280px; width: 100%;">
+                        <canvas id="dash-line-chart"></canvas>
+                    </div>
+                    <div class="chart-legend">
+                        <div><span class="chart-legend-dot" style="background: #4f46e5;"></span>Match Score</div>
+                        <div><span class="chart-legend-dot" style="background: #10b981;"></span>ATS Score</div>
+                    </div>
+                </div>
+
+                <!-- Skill Gap Doughnut -->
+                <div class="card glass-panel dash-chart-card">
+                    <h3>Top Skill Gaps</h3>
+                    <p class="chart-subtitle">Most frequent missing skills</p>
+                    <div style="height: 200px; width: 100%; display: flex; justify-content: center;">
+                        <canvas id="dash-doughnut-chart"></canvas>
+                    </div>
+                    <ul class="skill-gap-list" id="dash-skill-gap-list">
+                        <!-- populated by JS -->
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Market Demand Trends (NEW Phase 2) -->
+            <section class="dash-charts-grid" id="market-trends-section" style="display: none; margin-bottom: 2rem;">
+                <div class="card glass-panel dash-chart-card" style="grid-column: span 2;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                        <div>
+                            <h3>Skill Market Demand</h3>
+                            <p class="chart-subtitle">Real-time demand trends for your top skills</p>
+                        </div>
+                        <div id="market-summary-badge" style="background: rgba(16, 185, 129, 0.08); color: #10b981; padding: 6px 15px; border-radius: 20px; font-size: 0.8rem; font-weight: 700;">
+                            Stable Market
+                        </div>
+                    </div>
+                    <div style="height: 300px; width: 100%;">
+                        <canvas id="market-trends-chart"></canvas>
+                    </div>
+                    <div id="market-outlook-container" style="margin-top: 1.5rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                        <!-- populated by JS -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Recent History -->
+            <section class="dash-history-section">
+                <div class="dash-section-header">
+                    <h2>Recent Analyses</h2>
+                </div>
+                <div id="dash-history-container" class="dash-history-list">
+                    <div class="card glass-panel dash-empty-state">
+                        <div class="empty-icon">📄</div>
+                        <h3>No analyses yet</h3>
+                        <p>Start your first resume analysis to see results here.</p>
+                        <a href="analyzer.html" class="btn-new-scan" style="display: inline-flex; margin-top: 0.5rem;">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                            Start First Analysis
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- AI Tips / Recommendations -->
+            <section style="margin-bottom: 3rem;">
+                <div class="card glass-panel ai-tips-card">
+                    <h3>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--text-indigo)" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                        AI Career Intelligence
+                    </h3>
+                    <p id="dash-ai-tip">Based on your activity, our NLP engine suggests intensifying focus on your most common skill gaps. Applications showing scores above <strong>80%</strong> have a 4x higher probability of moving to interview stage. Keep optimizing!</p>
+                </div>
+            </section>
+        </main>
+
+        <footer class="v4-footer-unified glass-panel">
+            <div class="footer-grid-v4">
+                <div class="footer-brand-col">
+                    <div class="f-logo">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2L2 7L12 12L22 7L12 2Z"/><path d="M2 17L12 22L22 17"/><path d="M2 12L12 17L22 12"/></svg>
+                        <span>ResuMind AI</span>
+                    </div>
+                    <p>Empowering the next generation of talent through deep AI-driven career intelligence and predictive modeling.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Product</h4>
+                    <ul class="footer-nav-list">
+                        <li><a href="analyzer.html">Analyzer</a></li>
+                        <li><a href="features.html">Features</a></li>
+                        <li><a href="api-docs.html">API Docs</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Company</h4>
+                    <ul class="footer-nav-list">
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="#">Privacy</a></li>
+                        <li><a href="#">Terms</a></li>
+                    </ul>
+                </div>
+                <div class="footer-newsletter">
+                    <h4>Stay Updated</h4>
+                    <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.5rem;">Get the latest career trends directly in your inbox.</p>
+                    <div class="newsletter-form">
+                        <input type="email" placeholder="email@example.com" class="newsletter-input">
+                        <button class="btn btn-indigo btn-sm">Join</button>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom-v4">
+                <div>© 2026 ResuMind AI. All rights reserved.</div>
+                <div style="color: var(--text-indigo);">Powered by Large Learning Model</div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- JS Scripts -->
+    <script type="module" src="js/auth.js"></script>
+    <script type="module" src="js/dashboard.js"></script>
+</body>
+</html>

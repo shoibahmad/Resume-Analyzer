@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Documentation | ResuMind AI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/components.css">
+    <style>
+        pre { background: #0f172a; color: #f8fafc; padding: 1.5rem; border-radius: 12px; font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; overflow-x: auto; line-height: 1.5; border: 1px solid rgba(255,255,255,0.1); }
+        .endpoint-card { margin-bottom: 3rem; }
+        .method { padding: 4px 10px; border-radius: 6px; font-weight: 800; font-size: 0.75rem; color: white; margin-right: 0.75rem; }
+        .method.post { background: #10b981; }
+        .method.get { background: #3b82f6; }
+        .param-table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.9rem; }
+        .param-table th, .param-table td { text-align: left; padding: 1rem; border-bottom: 1px solid var(--border-subtle); }
+        code { color: var(--text-indigo); background: rgba(79,70,229,0.05); padding: 2px 6px; border-radius: 4px; font-size: 0.9em; }
+    </style>
+</head>
+<body>
+    <div class="bg-shape shape-1"></div>
+
+    <div class="app-container">
+        <!-- Navigation -->
+        <nav class="top-nav glass-panel">
+            <div class="nav-brand">
+                <a href="index.html" style="text-decoration: none; display: flex; align-items: center; gap: 0.75rem;">
+                    <div class="brand-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                            <path d="M12 2L2 7L12 12L22 7L12 2Z"/><path d="M2 17L12 22L22 17"/><path d="M2 12L12 17L22 12"/>
+                        </svg>
+                    </div>
+                    <span class="brand-text">ResuMind <span class="text-indigo">AI</span></span>
+                </a>
+            </div>
+            <div class="nav-links">
+                <a href="features.html" class="nav-link">Features</a>
+                <a href="about.html" class="nav-link">About</a>
+                <a href="api-docs.html" class="nav-link active">API</a>
+                <a href="analyzer.html" class="btn btn-indigo btn-sm">Analyze Resume</a>
+            </div>
+        </nav>
+
+        <main class="main-content" style="max-width: 900px; margin: 0 auto; padding-top: 4rem;">
+            <header style="margin-bottom: 4rem;">
+                <h1 style="font-size: 3rem; margin-bottom: 1.5rem;">Developer <span class="gradient-text">API Docs</span></h1>
+                <p style="font-size: 1.1rem; color: var(--text-muted); line-height: 1.6;"> Integrate the recruitment intelligence engine of ResuMind AI directly into your platform using our RESTful endpoints.</p>
+            </header>
+
+            <!-- Authentication Section -->
+            <section class="endpoint-card">
+                <h2 style="margin-bottom: 1rem;">Authentication</h2>
+                <div class="card glass-panel" style="border-left: 4px solid #f59e0b;">
+                    <p style="font-size: 0.95rem; color: var(--text-muted);">Currently in <strong>Public Beta</strong>. API Keys are generated automatically for registered users. Provide your key in the header of every request.</p>
+                    <pre style="margin-top: 1rem;">X-API-KEY: your_api_key_here</pre>
+                </div>
+            </section>
+
+            <!-- Analyze Endpoint -->
+            <section class="endpoint-card">
+                <div style="display: flex; align-items: center; margin-bottom: 1.5rem;">
+                    <span class="method post">POST</span>
+                    <h3 style="font-size: 1.4rem;">/api/analyze</h3>
+                </div>
+                <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Upload a resume (PDF/DOCX) and a job description to receive a full AI analysis, including match scores and predictive career data.</p>
+                
+                <h4 style="font-size: 0.9rem; color: var(--text-indigo); margin-bottom: 0.5rem; text-transform: uppercase;">Body Parameters (Multipart Form Data)</h4>
+                <table class="param-table">
+                    <tr><th>Parameter</th><th>Type</th><th>Description</th></tr>
+                    <tr><td><code>resume</code></td><td>File</td><td>The resume file (PDF or DOCX). Max 5MB.</td></tr>
+                    <tr><td><code>job_description</code></td><td>String</td><td>The text of the target job description.</td></tr>
+                </table>
+
+                <h4 style="font-size: 0.9rem; color: var(--text-indigo); margin: 2rem 0 0.5rem; text-transform: uppercase;">Example Request (cURL)</h4>
+                <pre>
+curl -X POST "https://resumind-api.com/api/analyze" \
+     -H "Content-Type: multipart/form-data" \
+     -F "resume=@my_resume.pdf" \
+     -F "job_description=Looking for a Python Guru..."
+                </pre>
+            </section>
+
+            <!-- Career Path Endpoint -->
+            <section class="endpoint-card">
+                <div style="display: flex; align-items: center; margin-bottom: 1.5rem;">
+                    <span class="method post">POST</span>
+                    <h3 style="font-size: 1.4rem;">/api/career-path</h3>
+                </div>
+                <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Generates a multi-stage career progression roadmap based on current role and skills.</p>
+                
+                <h4 style="font-size: 0.9rem; color: var(--text-indigo); margin-bottom: 0.5rem; text-transform: uppercase;">Request Body (JSON)</h4>
+                <pre>
+{
+  "current_role": "Software Developer",
+  "skills": ["Python", "FastAPI", "Docker"]
+}
+                </pre>
+            </section>
+        </main>
+
+        <footer class="v4-footer-unified glass-panel">
+            <div style="text-align: center; color: var(--text-muted); font-size: 0.9rem;">
+                © 2026 ResuMind API. Powered by Large Learning Model
+            </div>
+        </footer>
+    </div>
+</body>
+</html>

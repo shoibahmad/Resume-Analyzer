@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analyzer | ResuMind AI</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Dynamic SVG Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%234338ca'><path d='M12 2L2 7L12 12L22 7L12 2Z'/><path d='M2 17L12 22L22 17'/><path d='M2 12L12 17L22 12'/></svg>">
+
+    <!-- CSS Dependencies -->
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/toast.css">
+    
+    <!-- Chart.js for Radar Analysis -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .analyzer-layout {
+            display: block;
+            min-height: calc(100vh - 80px);
+            margin-top: 1.5rem;
+            padding-bottom: 4rem;
+        }
+
+        .analyzer-content-stream {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        @media (max-width: 768px) {
+            .history-item { grid-template-columns: 1fr auto; gap: 1rem; padding: 1.25rem; }
+            .h-ats { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-shape shape-1"></div>
+    <div class="bg-shape shape-2"></div>
+
+    <div class="app-container">
+        <!-- Navigation -->
+        <nav class="top-nav glass-panel">
+            <div class="nav-brand">
+                <a href="index.html" style="text-decoration: none; display: flex; align-items: center; gap: 0.75rem;">
+                    <div class="brand-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                            <path d="M12 2L2 7L12 12L22 7L12 2Z"/>
+                            <path d="M2 17L12 22L22 17"/>
+                            <path d="M2 12L12 17L22 12"/>
+                        </svg>
+                    </div>
+                    <span class="brand-text">ResuMind <span class="text-indigo">AI</span></span>
+                </a>
+            </div>
+
+            <div class="nav-links">
+                <a href="dashboard.html" class="nav-link">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="vertical-align: middle; margin-right: 4px;">
+                        <rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect>
+                    </svg>
+                    Dashboard
+                </a>
+                <a href="career-path.html" class="nav-link">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="vertical-align: middle; margin-right: 4px;">
+                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline>
+                    </svg>
+                    Career Path
+                </a>
+                <a href="settings.html" class="nav-link">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="vertical-align: middle; margin-right: 4px;">
+                        <circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                    </svg>
+                    Settings
+                </a>
+                <div class="user-profile-nav" id="user-profile-display">
+                    <div class="u-info">
+                        <span id="user-name" class="u-name">Loading...</span>
+                        <span id="user-email" class="u-email"></span>
+                    </div>
+                    <button class="btn btn-indigo btn-sm" id="logout-btn" onclick="handleLogout()" style="display: none;">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                        Logout
+                    </button>
+                </div>
+            </div>
+        </nav>
+
+        <main class="main-content">
+            <div class="analyzer-layout">
+                <div class="analyzer-content-stream">
+                    <!-- Upload Section -->
+                    <section id="section-upload" class="hero-split-grid" style="padding-top: 2rem;">
+                        <div class="hero-content staggered-entry fade-in-up">
+                            <div class="pill-label">AI-POWERED ANALYSIS</div>
+                            <h1 class="hero-title" style="font-size: 3rem;">Ready to <span class="gradient-text">Optimize?</span></h1>
+                            <p class="hero-subtitle">Upload your latest resume version to see how it matches your target role.</p>
+                            
+                            <div class="features-info-grid" style="grid-template-columns: 1fr; gap: 1.5rem; margin-top: 2rem;">
+                                <div class="feature-info-item">
+                                    <div class="f-icon">✨</div>
+                                    <div class="f-texts">
+                                        <h3>AI Resume Fixer</h3>
+                                        <p>Instant professional summary rewrite included.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="hero-form-container staggered-entry fade-in-up" style="--delay: 0.1">
+                            <div class="card glass-panel v3-form-card shadow-premium" style="padding: 2.5rem;">
+                                <form id="analyze-form">
+                                    <div class="v3-form-group">
+                                        <label for="resume">UPLOAD RESUME (PDF/DOCX)</label>
+                                        <div class="v3-upload-zone" id="drop-zone" style="margin-top: 0.75rem;">
+                                            <div class="upload-icon">
+                                                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2-2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                                            </div>
+                                            <p id="file-name" style="font-weight: 700;">Drag & drop or Click to browse</p>
+                                            <input type="file" id="resume" accept=".pdf,.docx" style="display: none;">
+                                        </div>
+                                    </div>
+                                    <div class="v3-form-group" style="margin-top: 2rem;">
+                                        <label for="job-description">TARGET JOB DESCRIPTION</label>
+                                        <textarea id="job-description" placeholder="Paste the JD here..." required></textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-indigo btn-block btn-large glow-effect" id="analyze-btn" style="margin-top: 1.5rem; height: 60px; font-size: 1.1rem;">
+                                        ANALYZE NOW
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Full Screen Loading Overlay -->
+                    <div id="loading-overlay" class="loading-overlay hidden">
+                        <div class="loading-bg-blur"></div>
+                        <div class="loading-card glass-panel staggered-entry fade-in-up">
+                            <div class="scanner-container">
+                                <div class="scanner-line"></div>
+                                <div class="spinner-v4"></div>
+                            </div>
+                            <h2 class="gradient-text">Analyzing Your Future...</h2>
+                            <p>Our AI is matching your DNA with the job requirements.</p>
+                            <div class="v4-loading-bar-container">
+                                <div class="v4-loading-bar" id="load-progress"></div>
+                            </div>
+                            <div id="loading-step-text" class="loading-step">Extracting semantic entities...</div>
+                        </div>
+                    </div>
+
+                    <!-- Results Section -->
+                    <section id="section-results" class="hidden">
+                        <div class="results-header-v10" style="display: flex; gap: 1rem;">
+                            <button class="btn btn-indigo btn-sm glow-effect" id="try-again-btn" style="margin-bottom: 2rem;">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="margin-right: 8px;"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                                New Analysis
+                            </button>
+                            <a href="dashboard.html" class="btn btn-glass btn-sm" style="margin-bottom: 2rem; text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                    <rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect>
+                                </svg>
+                                Go to Dashboard
+                            </a>
+                        </div>
+
+                        <div class="results-container-v10">
+                            <!-- Left Column: Scores & Salary -->
+                            <div class="v10-col-left">
+                                <div class="card glass-panel score-card-v10 staggered-entry fade-in-up">
+                                    <div class="circular-score-wrapper">
+                                        <svg viewBox="0 0 36 36" class="v3-circular-chart">
+                                            <path class="circle-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
+                                            <path id="score-path" class="circle" stroke-dasharray="0, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
+                                        </svg>
+                                        <div class="score-labels">
+                                            <span id="score-text" class="score-val" style="font-size: 2.2rem; font-weight: 800; color: var(--text-indigo);">0%</span>
+                                            <span class="score-label" style="font-size: 0.7rem; font-weight: 800; color: var(--text-muted); letter-spacing: 0.1em;">OVERALL FIT</span>
+                                        </div>
+                                    </div>
+                                    <div class="v3-divider" style="margin: 1.5rem 0;"></div>
+                                    <div class="mini-stats-v10">
+                                        <div class="m-stat">
+                                            <span class="m-label">ATS READABILITY</span>
+                                            <span id="ats-text" class="m-val">0%</span>
+                                        </div>
+                                        <div class="ats-circle-mini" style="width: 40px; height: 40px;">
+                                            <svg viewBox="0 0 36 36"><path id="ats-circle-path" class="circle" stroke-dasharray="0, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831"/></svg>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="card glass-panel salary-card-v10 staggered-entry fade-in-up" style="margin-top: 1.5rem; padding: 2rem;">
+                                    <div class="salary-header" style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem;">
+                                        <div class="s-icon" style="font-size: 1.5rem;">💰</div>
+                                        <h3 style="font-size: 1rem; text-transform: uppercase; letter-spacing: 0.05em;">Salary Insights</h3>
+                                    </div>
+                                    <div class="salary-range" id="salary-range-text" style="font-size: 1.5rem; font-weight: 800; color: #10b981; margin-bottom: 1.5rem;">$0 - $0</div>
+                                    <div class="v3-divider" style="margin-bottom: 1.5rem;"></div>
+                                    <div class="negotiation-coach">
+                                        <span class="tip-label" style="font-size: 0.8rem; font-weight: 800; color: var(--text-muted);">NEGOTIATION GUIDE:</span>
+                                        <ul id="negotiation-tips-list" class="v3-list" style="margin-top: 0.75rem; font-size: 0.9rem; color: var(--text-muted); line-height: 1.6;"></ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Right Column: Logic & Analysis -->
+                            <div class="v10-col-right">
+                                <div class="card glass-panel staggered-entry fade-in-up" style="--delay: 0.4">
+                                    <div class="h-group" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                                        <h3 style="font-size: 1.25rem;">Experience Analysis</h3>
+                                        <span id="score-status" class="status-pill">Analyzing...</span>
+                                    </div>
+                                    <p id="experience-match-text" class="v3-description" style="line-height: 1.6; color: var(--text-muted);">Recalculating experience depth...</p>
+                                </div>
+
+                                <!-- Radar Chart Section -->
+                                <div class="card glass-panel staggered-entry fade-in-up" style="margin-top: 1.5rem;">
+                                    <h3 style="font-size: 1.25rem; margin-bottom: 1.5rem;">Skills Gap Analysis</h3>
+                                    <div style="max-width: 450px; margin: 0 auto; min-height: 350px;">
+                                        <canvas id="skills-radar-chart"></canvas>
+                                    </div>
+                                    <div style="display: flex; justify-content: center; gap: 2rem; margin-top: 1rem; font-size: 0.85rem; font-weight: 700;">
+                                        <div style="display: flex; align-items: center; gap: 0.5rem;"><div style="width: 12px; height: 12px; background: rgba(79, 70, 229, 0.6); border-radius: 2px;"></div><span>Your Profile</span></div>
+                                        <div style="display: flex; align-items: center; gap: 0.5rem;"><div style="width: 12px; height: 12px; background: rgba(16, 185, 129, 0.4); border-radius: 2px;"></div><span>Job Requirements</span></div>
+                                    </div>
+                                </div>
+
+                                <!-- Shadow Recruiter: Vision Feedback -->
+                                <div class="card glass-panel visual-audit-card staggered-entry fade-in-up" id="shadow-recruiter-card" style="margin-top: 1.5rem; display: none; padding: 2.5rem;">
+                                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.5rem;">
+                                        <div>
+                                            <h3 style="font-size: 1.5rem; display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.5rem;">
+                                                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--text-indigo)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 4h.01"></path></svg>
+                                                Shadow Recruiter: Visual Audit
+                                            </h3>
+                                            <p style="color: var(--text-muted); font-size: 0.9rem; font-weight: 600;">AI analysis of your resume's human-readability</p>
+                                        </div>
+                                        
+                                        <div class="design-score-gauge">
+                                            <svg viewBox="0 0 36 36">
+                                                <path class="bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                                <path id="visual-score-path" class="progress" stroke-dasharray="0, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                                            </svg>
+                                            <div id="visual-score-val" class="val">0%</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="visual-metric-grid">
+                                        <div class="visual-metric-item">
+                                            <div style="display: flex; align-items: flex-start; justify-content: space-between;">
+                                                <div class="visual-metric-icon">
+                                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
+                                                </div>
+                                                <span id="visual-scanability-badge" class="status-pill" style="font-size: 0.65rem;">Analyzing...</span>
+                                            </div>
+                                            <span class="visual-metric-label">Scanability</span>
+                                            <p id="visual-scanability-text" class="visual-metric-val">Quick processing fit...</p>
+                                        </div>
+
+                                        <div class="visual-metric-item">
+                                            <div class="visual-metric-icon" style="background: #eff6ff; color: #3b82f6;">
+                                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7V4h16v3M9 20h6M12 4v16"></path></svg>
+                                            </div>
+                                            <span class="visual-metric-label">Typography</span>
+                                            <p id="visual-typography-text" class="visual-metric-val">Evaluating font choices...</p>
+                                        </div>
+
+                                        <div class="visual-metric-item" style="grid-column: span 2;">
+                                            <div style="display: flex; align-items: flex-start; gap: 1rem;">
+                                                <div class="visual-metric-icon" style="background: #fdf2f8; color: #db2777; flex-shrink: 0;">
+                                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+                                                </div>
+                                                <div>
+                                                    <span class="visual-metric-label">Visual Hierarchy</span>
+                                                    <p id="visual-hierarchy-text" class="visual-metric-val">Checking structural balance...</p>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="visual-metric-item" style="grid-column: span 2;">
+                                            <div style="display: flex; align-items: flex-start; gap: 1rem;">
+                                                <div class="visual-metric-icon" style="background: #f0fdf4; color: #16a34a; flex-shrink: 0;">
+                                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="3" y1="15" x2="21" y2="15"></line><line x1="9" y1="3" x2="9" y2="21"></line><line x1="15" y1="3" x2="15" y2="21"></line></svg>
+                                                </div>
+                                                <div>
+                                                    <span class="visual-metric-label">White Space</span>
+                                                    <p id="visual-whitespace-text" class="visual-metric-val">Measuring margins & flow...</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="v3-swot-grid staggered-entry fade-in-up" style="--delay: 0.6; margin-top: 1.5rem;">
+                                    <div class="v3-swot-box">
+                                        <h4 style="color: var(--success-color); font-size: 0.9rem; margin-bottom: 1rem; text-transform: uppercase;">Strengths</h4>
+                                        <ul id="strengths-list" class="v3-list"></ul>
+                                    </div>
+                                    <div class="v3-swot-box" style="border-left-color: var(--error-color);">
+                                        <h4 style="color: var(--error-color); font-size: 0.9rem; margin-bottom: 1rem; text-transform: uppercase;">Gaps & Weaknesses</h4>
+                                        <ul id="weaknesses-list" class="v3-list"></ul>
+                                    </div>
+                                </div>
+
+                                <div class="card glass-panel fixer-card-v10 staggered-entry fade-in-up" style="margin-top: 1.5rem;">
+                                    <div class="fixer-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                                        <div class="h-group"><div class="fixer-badge" style="background: var(--indigo-light); color: var(--text-indigo); padding: 4px 10px; border-radius: 20px; font-size: 0.7rem; font-weight: 800; margin-bottom: 0.5rem;">AI OPTIMIZED</div><h3 style="font-size: 1.25rem;">Resume Summary Fixer</h3></div>
+                                        <button class="btn btn-indigo btn-sm" id="copy-summary-btn">Copy</button>
+                                    </div>
+                                    <div class="fixer-content" style="background: rgba(79, 70, 229, 0.03); padding: 1.5rem; border-radius: var(--radius-md); border: 1px dashed rgba(79, 70, 229, 0.2);">
+                                        <p id="optimized-summary-text" style="line-height: 1.7; color: var(--text-muted); font-style: italic;">Your AI-rewritten professional summary will appear here...</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="card glass-panel staggered-entry fade-in-up" style="margin-top: 1.5rem;">
+                                    <h3 style="font-size: 1.25rem; margin-bottom: 1.5rem;">NLP Deep Insights</h3>
+                                    <div class="nlp-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                                        <div class="nlp-metric">
+                                            <div class="m-h" style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;"><span style="font-size: 0.8rem; font-weight: 700;">Verb Strength</span><span id="verb-score-val" style="font-weight: 800; color: var(--text-indigo);">0%</span></div>
+                                            <div class="m-bar-bg" style="height: 6px; background: #f1f5f9; border-radius: 3px;"><div id="verb-bar" style="height: 100%; width: 0%; background: var(--text-indigo); border-radius: 3px; transition: width 1s;"></div></div>
+                                        </div>
+                                        <div class="nlp-metric">
+                                            <div class="m-h" style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;"><span style="font-size: 0.8rem; font-weight: 700;">Complexity</span><span id="complexity-val" style="font-weight: 800; color: #0d9488;">0%</span></div>
+                                            <div class="m-bar-bg" style="height: 6px; background: #f1f5f9; border-radius: 3px;"><div id="complexity-bar" style="height: 100%; width: 0%; background: #0d9488; border-radius: 3px; transition: width 1s;"></div></div>
+                                        </div>
+                                    </div>
+                                    <div class="nlp-bottom" style="display: flex; gap: 1rem; margin-top: 1.5rem;">
+                                        <div class="tone-pill" style="background: #f8fafc; padding: 6px 15px; border-radius: 20px; font-size: 0.8rem;">
+                                            <span style="font-weight: 700; color: var(--text-muted); margin-right: 5px;">TONE:</span>
+                                            <span id="tone-text" style="font-weight: 800; color: var(--text-indigo);">Analyzing...</span>
+                                        </div>
+                                        <div id="themes-container" class="v3-badges small"></div>
+                                    </div>
+                                </div>
+
+                                <div class="card glass-panel staggered-entry fade-in-up" style="margin-top: 1.5rem;">
+                                    <h3 style="font-size: 1.25rem; margin-bottom: 1rem;">Expert Recommendations</h3>
+                                    <div style="background: rgba(16, 185, 129, 0.03); padding: 1.5rem; border-radius: var(--radius-md); border: 1px solid rgba(16, 185, 129, 0.1);">
+                                        <p id="recommendations-text" class="v3-description" style="line-height: 1.7; color: var(--text-muted); font-weight: 500;">Getting expert advice...</p>
+                                    </div>
+                                </div>
+
+                                <div class="card glass-panel staggered-entry fade-in-up" style="margin-top: 1.5rem;">
+                                    <h3 style="font-size: 1.25rem; margin-bottom: 1.25rem;">Interview Preparation</h3>
+                                    <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1.5rem; font-style: italic;">Based on your identified gaps, prepare for these specific questions:</p>
+                                    <ul id="interview-list" class="v3-interview-list" style="display: flex; flex-direction: column; gap: 1rem;"></ul>
+                                </div>
+
+                                <!-- Tone & Sentiment Rewriter -->
+                                <div class="card glass-panel staggered-entry fade-in-up" id="tone-rewriter-card" style="margin-top: 1.5rem; display: none;">
+                                    <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.5rem;">
+                                        <div class="stat-icon-wrap" style="width: 36px; height: 36px; border-radius: 10px; background: rgba(124, 58, 237, 0.08); color: #7c3aed; display: flex; align-items: center; justify-content: center;">
+                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+                                        </div>
+                                        <div>
+                                            <h3 style="font-size: 1.25rem;">Tone & Sentiment Rewriter</h3>
+                                            <span id="tone-applied-badge" style="font-size: 0.7rem; font-weight: 800; color: #7c3aed; background: rgba(124, 58, 237, 0.08); padding: 2px 8px; border-radius: 10px;"></span>
+                                        </div>
+                                    </div>
+                                    <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.5rem;">Weak bullet points rewritten with stronger impact</p>
+                                    <div id="tone-rewriter-container" style="display: flex; flex-direction: column; gap: 1rem;"></div>
+                                </div>
+
+                                <!-- Keyword Density Heatmap -->
+                                <div class="card glass-panel staggered-entry fade-in-up" id="keyword-heatmap-card" style="margin-top: 1.5rem; display: none;">
+                                    <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.5rem;">
+                                        <div style="width: 36px; height: 36px; border-radius: 10px; background: rgba(245, 158, 11, 0.08); color: #f59e0b; display: flex; align-items: center; justify-content: center;">
+                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><rect x="7" y="7" width="3" height="9"/><rect x="14" y="7" width="3" height="5"/></svg>
+                                        </div>
+                                        <h3 style="font-size: 1.25rem;">Keyword Density Heatmap</h3>
+                                    </div>
+                                    <div id="heatmap-container" style="display: flex; flex-direction: column; gap: 1rem;"></div>
+                                </div>
+
+                                <!-- Role Fit Predictor -->
+                                <div class="card glass-panel staggered-entry fade-in-up" id="role-fit-card" style="margin-top: 1.5rem; display: none;">
+                                    <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.5rem;">
+                                        <div style="width: 36px; height: 36px; border-radius: 10px; background: rgba(16, 185, 129, 0.08); color: #10b981; display: flex; align-items: center; justify-content: center;">
+                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
+                                        </div>
+                                        <div>
+                                            <h3 style="font-size: 1.25rem;">AI Role Fit Predictor</h3>
+                                            <p style="font-size: 0.8rem; color: var(--text-muted); font-weight: 600;">Roles your resume is best suited for</p>
+                                        </div>
+                                    </div>
+                                    <div id="role-fit-container" style="display: flex; flex-direction: column; gap: 0.75rem;"></div>
+                                </div>
+
+                                <!-- Career Blueprint (V4 Forecast) -->
+                                <div class="card glass-panel staggered-entry fade-in-up" id="career-blueprint-card" style="margin-top: 1.5rem; display: none;">
+                                    <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.5rem;">
+                                        <div style="width: 36px; height: 36px; border-radius: 10px; background: rgba(79, 70, 229, 0.08); color: var(--text-indigo); display: flex; align-items: center; justify-content: center;">
+                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                                        </div>
+                                        <div>
+                                            <h3 style="font-size: 1.25rem;">AI Career Blueprint</h3>
+                                            <p style="font-size: 0.8rem; color: var(--text-muted); font-weight: 600;">Predicted 5-year professional trajectory</p>
+                                        </div>
+                                    </div>
+                                    <div id="career-timeline-container" class="v4-timeline"></div>
+                                </div>
+
+                                <!-- Culture Fit Analysis -->
+                                <div class="card glass-panel staggered-entry fade-in-up" id="culture-fit-card" style="margin-top: 1.5rem; display: none;">
+                                    <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.5rem;">
+                                        <div style="width: 36px; height: 36px; border-radius: 10px; background: rgba(236, 72, 153, 0.08); color: #ec4899; display: flex; align-items: center; justify-content: center;">
+                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+                                        </div>
+                                        <h3 style="font-size: 1.25rem;">Culture Fit Analysis</h3>
+                                    </div>
+                                    <div id="culture-fit-bars" style="display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1.5rem;"></div>
+                                    <div style="background: rgba(236, 72, 153, 0.03); padding: 1.25rem; border-radius: var(--radius-md); border: 1px solid rgba(236, 72, 153, 0.1);">
+                                        <p id="culture-fit-assessment" style="line-height: 1.7; color: var(--text-muted); font-weight: 500; font-size: 0.9rem;"></p>
+                                    </div>
+                                </div>
+
+                                <!-- Resume Age Detector -->
+                                <div class="card glass-panel staggered-entry fade-in-up" id="resume-age-card" style="margin-top: 1.5rem; display: none;">
+                                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.5rem;">
+                                        <div style="display: flex; align-items: center; gap: 0.75rem;">
+                                            <div style="width: 36px; height: 36px; border-radius: 10px; background: rgba(239, 68, 68, 0.08); color: #ef4444; display: flex; align-items: center; justify-content: center;">
+                                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                                            </div>
+                                            <h3 style="font-size: 1.25rem;">Resume Age Detector</h3>
+                                        </div>
+                                        <div id="freshness-badge" style="padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 800;"></div>
+                                    </div>
+                                    <div id="resume-age-outdated" style="display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 1.25rem;"></div>
+                                    <div style="background: rgba(239, 68, 68, 0.03); padding: 1.25rem; border-radius: var(--radius-md); border: 1px solid rgba(239, 68, 68, 0.1);">
+                                        <p id="resume-age-verdict" style="line-height: 1.7; color: var(--text-muted); font-weight: 500; font-size: 0.9rem;"></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="skills-section-v10" style="margin-top: 2.5rem;">
+                            <div class="card glass-panel">
+                                <div class="skills-grid-v10" style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                                    <div class="skill-group">
+                                        <h4 style="font-size: 0.9rem; color: #10b981; margin-bottom: 1.5rem; text-transform: uppercase; letter-spacing: 0.05em;">Matched Skills</h4>
+                                        <div id="matched-skills-container" class="v3-badges"></div>
+                                    </div>
+                                    <div class="skill-group" style="padding-left: 2rem; border-left: 1px solid #f1f5f9;">
+                                        <h4 style="font-size: 0.9rem; color: #ef4444; margin-bottom: 1.5rem; text-transform: uppercase; letter-spacing: 0.05em;">Missing Gaps</h4>
+                                        <div id="missing-skills-container" class="v3-badges"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="roadmap-section" class="staggered-entry fade-in-up" style="margin-top: 4rem;">
+                            <div class="pill-label" style="background: #fdf2f8; color: #db2777;">GROWTH PLAN</div>
+                            <h2 style="margin-bottom: 2rem; font-size: 2.5rem;">AI Career <span class="gradient-text">Learning Roadmap</span></h2>
+                            <div id="roadmap-container" class="roadmap-grid"></div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </main>
+
+        <footer class="v4-footer-unified glass-panel">
+            <div class="footer-grid-v4">
+                <div class="footer-brand-col">
+                    <div class="f-logo">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2L2 7L12 12L22 7L12 2Z"/><path d="M2 17L12 22L22 17"/><path d="M2 12L12 17L22 12"/></svg>
+                        <span>ResuMind AI</span>
+                    </div>
+                    <p>Empowering the next generation of talent through deep AI-driven career intelligence and predictive modeling.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Product</h4>
+                    <ul class="footer-nav-list">
+                        <li><a href="analyzer.html">Analyzer</a></li>
+                        <li><a href="features.html">Features</a></li>
+                        <li><a href="api-docs.html">API Docs</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Company</h4>
+                    <ul class="footer-nav-list">
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="#">Privacy</a></li>
+                        <li><a href="#">Terms</a></li>
+                    </ul>
+                </div>
+                <div class="footer-newsletter">
+                    <h4>Stay Updated</h4>
+                    <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.5rem;">Get the latest career trends directly in your inbox.</p>
+                    <div class="newsletter-form">
+                        <input type="email" placeholder="email@example.com" class="newsletter-input">
+                        <button class="btn btn-indigo btn-sm">Join</button>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom-v4">
+                <div>© 2026 ResuMind AI. All rights reserved.</div>
+                <div style="color: var(--text-indigo);">Powered by Large Learning Model</div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- JS Scripts -->
+    <script type="module" src="js/auth.js"></script>
+    <script type="module" src="js/api.js"></script>
+    <script type="module" src="js/ui.js"></script>
+    <script type="module" src="js/history.js"></script>
+    <script type="module" src="js/app.js"></script>
+</body>
+</html>

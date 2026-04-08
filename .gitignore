@@ -1,0 +1,45 @@
+# Python dependencies
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Environment variables
+.env
+.venv
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Firebase / Secrets
+firebase-adminsdk.json
+*.json
+
+# Frontend dependencies
+node_modules/
+dist/
+.DS_Store
+
+# IDEs
+.vscode/
+.idea/
+
+# Backend specific
+backend/.env
+backend/__pycache__/
+backend/*.pyc
